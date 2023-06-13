@@ -44,6 +44,8 @@ function runGame(gameType) {
         displaySubtractQuestion(num1, num2);
     } else if (gameType === "multiply") {
         displayMultiplyQuestion(num1, num2);
+    } else if (gameType === "division") {
+        displayDivisionQuestion(num1, num2);
     } else {
         alert(`Unknown game type: ${gameType}`);
         throw `Unknown game type: ${gameType}. Aborting!`;
@@ -89,6 +91,8 @@ function calculateCorrectAnswer() {
         return [operand1 - operand2, "subtract"];
     } else if (operator === "x") {
         return [operand1 * operand2, "multiply"];
+    } else if (operator === "/") {
+        return [operand1 / operand2, "division"];
     } else {
         alert(`Unimplemented operator ${operator}`);
         throw `Unimplemented operator ${operator}. Aborting!`;
@@ -137,5 +141,33 @@ function displayMultiplyQuestion(operand1, operand2) {
     document.getElementById("operand1").textContent = operand1;
     document.getElementById("operand2").textContent = operand2;
     document.getElementById("operator").textContent = "x";
+
+}
+
+function displayDivisionQuestion(operand1, operand2) {
+    /* creates the division question by finding the lowest common multiple of 
+    the two operands and setting it as the first problem operand, then using
+    the lesser of the two operands as the second */
+
+    // find and store the lesser of the two operands
+    lesserOperand = operand1 > operand2 ? operand2 : operand1;
+
+    // find the greatest common factor of operand1 and operand2
+    let gcf;
+
+    // find gcf by finding highest number that is a factor (i.e. has a modula of 0) of both numbers
+    for (let i = 1; i <= lesserOperand; i++) {
+        // loops from 1 to lesserOperand and updates gcf when a common factor is found
+        if (operand1 % i === 0 && operand2 % i === 0) {
+            gcf = i;
+        }
+    }
+
+    // find the least common multiple of operand1 and operand2
+    lcm = Math.abs(operand1 * operand2) / gcf;
+
+    document.getElementById("operand1").textContent = lcm;
+    document.getElementById("operand2").textContent = lesserOperand;
+    document.getElementById("operator").textContent = "/";
 
 }
